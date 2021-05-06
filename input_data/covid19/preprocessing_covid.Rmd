@@ -1,0 +1,83 @@
+---
+title: "InterCellar- preprocessing of Covid19 data"
+author: "Marta Interlandi"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup_environment, message=FALSE, warning=FALSE}
+library(Seurat)
+library(readxl)
+library(WriteXLS)
+
+setwd("/marta_home/InterCellar-docs/validation_data/covid")
+
+
+```
+
+
+## Preparing data for CellphoneDB v2
+
+```{r cnvuo}
+covid.main <- readRDS("./covid_nbt_main.rds")
+unique(covid.main$sample) # 32 samples
+unique(covid.main$patient) # 24 patients
+table(covid.main$celltype)
+head(rownames(covid.main))
+
+sum(covid.main$celltype == "outliers_epithelial", covid.main$celltype == "unknown_epithelial") / ncol(covid.main) *100
+# removing cell types not considered in the paper
+covid.main <- subset(covid.main, subset = celltype != "unknown_epithelial")
+covid.main <- subset(covid.main, subset = celltype != "outliers_epithelial")
+
+
+# renaming monocytes-derived macrophages to MoMa
+covid.main$celltype[covid.main$celltype == "MoD-Ma"] <- "MoMa"
+
+# separate severity
+table(covid.main$severity)
+
+control <- subset(covid.main, subset = severity == "control")
+dim(control)
+moderate <- subset(covid.main, subset = severity == "moderate")
+dim(moderate)
+critical <- subset(covid.main, subset = severity == "critical")
+dim(critical)
+
+
+# control
+norm_counts <- as.matrix(GetAssayData(control, slot = "data"))
+write.table(norm_counts, file = "./cpdb/CONTROL_normcounts.txt", row.names = T, col.names = T, quote = F, sep = "\t")
+
+meta_data <- data.frame(cells = colnames(control), clust = as.character(control$celltype))
+
+write.table(meta_data, file = "./cpdb/CONTROL_meta.txt", row.names = F, col.names = T, quote = F, sep = "\t")
+
+# moderate
+# randomly sampling 10000 cells
+set.seed(111)
+cell.sample <- sample(colnames(moderate), size = 10000, replace = FALSE)
+moderate.sub <- moderate[, cell.sample]
+norm_counts <- as.matrix(GetAssayData(moderate.sub, slot = "data"))
+write.table(norm_counts, file = "./cpdb/MODERATE_normcounts.txt", row.names = T, col.names = T, quote = F, sep = "\t")
+
+meta_data <- data.frame(cells = colnames(moderate.sub), clust = as.character(moderate.sub$celltype))
+
+write.table(meta_data, file = "./cpdb/MODERATE_meta.txt", row.names = F, col.names = T, quote = F, sep = "\t")
+
+# critical
+cell.sample <- sample(colnames(critical), size = 10000, replace = FALSE)
+critical.sub <- critical[, cell.sample]
+norm_counts <- as.matrix(GetAssayData(critical.sub, slot = "data"))
+write.table(norm_counts, file = "./cpdb/CRITICAL_normcounts.txt", row.names = T, col.names = T, quote = F, sep = "\t")
+
+meta_data <- data.frame(cells = colnames(critical.sub), clust = as.character(critical.sub$celltype))
+
+write.table(meta_data, file = "./cpdb/CRITICAL_meta.txt", row.names = F, col.names = T, quote = F, sep = "\t")
+
+
+
+```

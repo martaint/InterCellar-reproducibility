@@ -1,0 +1,100 @@
+---
+title: "Preprocessing melanoma (Tirosh et al.)"
+author: "Marta Interlandi"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r set_env, message=FALSE}
+library(biomaRt)
+
+setwd("/marta_home/InterCellar-docs/validation_data/")
+
+```
+
+# Dataset - Melanoma from  Tirosh et al
+Pre-processed data (normalized TPM, smart-seq2) downloaded from GEO: GSE72056
+
+```{r cnudisu}
+#read the data
+melanoma.mat <- read.table("./GSE72056_melanoma_single_cell_revised_v2.txt", header = T)
+melanoma.mat[1:10,1:10]
+
+melanoma.meta <- melanoma.mat[1:3,]
+melanoma.dge <- melanoma.mat[-(1:3),]
+
+melanoma.dge[1:5,1:5]
+colnames(melanoma.dge)[1] <- "Gene"
+melanoma.meta[,1:10]
+rownames(melanoma.meta) <- melanoma.meta$Cell
+melanoma.meta <- melanoma.meta[,-1]
+melanoma.meta.df <- data.frame(cell_id = colnames(melanoma.dge)[-1], cell_type = NA)
+
+melanoma.meta.df[which(melanoma.meta[2,] == 2), "cell_type"] <- "malignant_cell"
+melanoma.meta.df[which(melanoma.meta[2,] == 0), "cell_type"] <- "unresolved"
+
+melanoma.meta.df[which(melanoma.meta[3,] == 1), "cell_type"] <- "T_cell"
+melanoma.meta.df[which(melanoma.meta[3,] == 2), "cell_type"] <- "B_cell"
+melanoma.meta.df[which(melanoma.meta[3,] == 3), "cell_type"] <- "Macro"
+melanoma.meta.df[which(melanoma.meta[3,] == 4), "cell_type"] <- "Endo"
+melanoma.meta.df[which(melanoma.meta[3,] == 5), "cell_type"] <- "CAF"
+melanoma.meta.df[which(melanoma.meta[3,] == 6), "cell_type"] <- "NK"
+
+saveRDS(melanoma.dge, "melanoma_dge.rds")
+saveRDS(melanoma.meta.df, "melanoma_meta.rds")
+
+# save dge in txt file for SingleCellSignalR
+write.table(melanoma.dge, file = "../input_tools/SCsignalR/melanoma_dge.txt", row.names = F)
+```
+
+# Prepare data for CellPhoneDB v2
+
+```{r ngu}
+
+data <- read.table(file = "../input_tools/SCsignalR/melanoma_dge.txt", header = T,  stringsAsFactors = F)
+data[1:5,1:5]
+# removing 2 genes that are falsely named MARCH2
+which(data$Gene == "MARCH2")
+#[1] 17008 23202
+data <- data[-c(17008,23202),]
+# removing 2 genes that are falsely named MARCH1
+which(data$Gene == "MARCH1")
+#[1] 8027 23637
+data <- data[-c(8027,23637),]
+# set rownames
+rownames(data) <- data$Gene
+# get metadata 
+metadata <- readRDS("./melanoma_meta.rds") 
+table(metadata$cell_type)
+sum(is.na(metadata$cell_type))
+
+# exclude cells that are unresolved or NA -> 4097 left
+(4645-4097) /4645
+cell2keep <- as.character(metadata[!is.na(metadata$cell_type) & metadata$cell_type != "unresolved", "cell_id"])
+
+data.sub <- data[, cell2keep]
+metadata.sub <- metadata[!is.na(metadata$cell_type) & metadata$cell_type != "unresolved",]
+table(metadata.sub$cell_type)
+
+metadata.sub$cell_id <- as.character(metadata.sub$cell_id)
+rownames(metadata.sub) <- metadata.sub$cell_id
+melanoma <- CreateSeuratObject(counts = data.sub, min.cells = 0, min.features = 0, meta.data = metadata.sub)
+
+melanoma <- NormalizeData(melanoma)
+
+## Preparing data for CellphoneDB v2
+
+# get normalized counts
+norm_counts <- as.matrix(GetAssayData(melanoma))
+write.table(norm_counts, file = "MELANOMA_normcounts.txt", row.names = T, col.names = T, quote = F, sep = "\t")
+
+meta_data <- data.frame(cells = colnames(melanoma), clust = melanoma$cell_type)
+
+write.table(meta_data, file = "MELANOMA_metadata.txt", row.names = F, col.names = T, quote = F, sep = "\t")
+
+
+
+```

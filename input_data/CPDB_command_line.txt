@@ -1,0 +1,12 @@
+## CPDB v2 call for COVID19
+
+cellphonedb method statistical_analysis /marta_home/InterCellar-docs/validation_data/covid/cpdb/CONTROL_meta.txt /marta_home/InterCellar-docs/validation_data/covid/cpdb/CONTROL_normcounts.txt --threads=40 --output-path=/marta_home/InterCellar-docs/validation_data/covid/cpdb/CONTROL_out --counts-data=gene_name
+
+cellphonedb method statistical_analysis /marta_home/InterCellar-docs/validation_data/covid/cpdb/MODERATE_meta.txt /marta_home/InterCellar-docs/validation_data/covid/cpdb/MODERATE_normcounts.txt --threads=40 --output-path=/marta_home/InterCellar-docs/validation_data/covid/cpdb/MODERATE_out --counts-data=gene_name
+
+cellphonedb method statistical_analysis /marta_home/InterCellar-docs/validation_data/covid/cpdb/CRITICAL_meta.txt /marta_home/InterCellar-docs/validation_data/covid/cpdb/CRITICAL_normcounts.txt --threads=40 --output-path=/marta_home/InterCellar-docs/validation_data/covid/cpdb/CRITICAL_out --counts-data=gene_name
+
+## CPDB v2 call for MELANOMA
+
+cellphonedb method statistical_analysis /marta_home/InterCellar-docs/validation_data/melanoma/MELANOMA_metadata.txt /marta_home/InterCellar-docs/validation_data/melanoma/MELANOMA_normcounts.txt --threads=40 --output-path=/marta_home/InterCellar-docs/validation_data/melanoma/cpdb/CPDB_out --counts-data=gene_name
+
