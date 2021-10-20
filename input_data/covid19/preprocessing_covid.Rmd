@@ -21,6 +21,8 @@ setwd("/marta_home/InterCellar-docs/validation_data/covid")
 
 ## Preparing data for CellphoneDB v2
 
+Data was retrieved from the original authors [here](https://doi.org/10.6084/m9.figshare.12436517).
+
 ```{r cnvuo}
 covid.main <- readRDS("./covid_nbt_main.rds")
 unique(covid.main$sample) # 32 samples
@@ -42,10 +44,15 @@ table(covid.main$severity)
 
 control <- subset(covid.main, subset = severity == "control")
 dim(control)
+saveRDS(control, file = "/marta_home/InterCellar-reproduc/InterCellar-reproducibility/input_data/covid19/covid_control_seuobj.rds")
+
 moderate <- subset(covid.main, subset = severity == "moderate")
 dim(moderate)
+saveRDS(moderate, file = "/marta_home/InterCellar-reproduc/InterCellar-reproducibility/input_data/covid19/covid_moderate_seuobj.rds")
+
 critical <- subset(covid.main, subset = severity == "critical")
 dim(critical)
+saveRDS(critical, file = "/marta_home/InterCellar-reproduc/InterCellar-reproducibility/input_data/covid19/covid_critical_seuobj.rds")
 
 
 # control

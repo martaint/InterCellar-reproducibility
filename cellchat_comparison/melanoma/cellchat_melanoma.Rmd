@@ -1,0 +1,128 @@
+---
+title: "Analysis of Melanoma dataset using CellChat"
+author: "Marta Interlandi"
+date: "9/15/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r setup_environment, message=FALSE, warning=FALSE}
+library(Seurat) 
+library(CellChat)
+```
+
+## Preparing data
+
+We load the melanoma Seurat object that was previously generated (see /input_data/melanoma/) and create a CellChat object. All steps of this analysis are following CellChat [tutorial](https://htmlpreview.github.io/?https://github.com/sqjin/CellChat/blob/master/tutorial/CellChat-vignette.html).
+
+```{r cnvuo}
+melanoma <- readRDS(file = "/marta_home/InterCellar-reproduc/InterCellar-reproducibility/input_data/melanoma/melanoma_seuobj.rds")
+
+melanoma <- NormalizeData(melanoma)
+melanoma <- createCellChat(melanoma, group.by = "cell_type", assay = "RNA")
+
+CellChatDB <- CellChatDB.human 
+
+# set the used database in the object
+melanoma@DB <- CellChatDB
+
+```
+
+# Preprocessing the expression data for cell-cell communication analysis
+
+
+```{r vfnu}
+# subset the expression data of signaling genes for saving computation cost
+melanoma <- subsetData(melanoma) # This step is necessary even if using the whole database
+
+melanoma <- identifyOverExpressedGenes(melanoma)
+
+melanoma <- identifyOverExpressedInteractions(melanoma)
+
+# project gene expression data onto PPI network (optional)
+melanoma <- projectData(melanoma, PPI.human)
+
+# Compute the communication probability and infer cellular communication network
+melanoma <- computeCommunProb(melanoma)
+
+
+# save df for predicted interactions
+df.net.melanoma <- subsetCommunication(melanoma)
+
+
+#write.csv(df.net.melanoma, file = "./cellchat_melanoma_interactions.csv", quote = F)
+
+
+# Infer the cell-cell communication at a signaling pathway level
+melanoma <- computeCommunProbPathway(melanoma)
+
+
+# Calculate the aggregated cell-cell communication network
+melanoma <- aggregateNet(melanoma)
+
+
+```
+
+
+```{r frnbgui}
+# melanoma circle plot
+groupSize <- as.numeric(table(melanoma@idents))
+
+netVisual_circle(melanoma@net$count, vertex.weight = groupSize, weight.scale = T, label.edge= T, title.name = "Number of interactions", edge.label.cex = 0.5)
+```
+
+```{r}
+netVisual_circle(melanoma@net$weight, vertex.weight = groupSize, weight.scale = T, label.edge= T, title.name = "Interaction weights/strength", edge.label.cex = 0.5)
+```
+
+
+
+# Compute the contribution of each ligand-receptor pair to the overall signaling pathway and visualize cell-cell communication mediated by a single ligand-receptor pair
+
+```{r grnugi}
+# show all the significant interactions (L-R pairs) associated with certain signaling pathways
+netVisual_bubble(melanoma, sources.use = NULL, targets.use = NULL, signaling = c("TGFb"), remove.isolate = FALSE, font.size = 20)
+```
+
+```{r}
+netVisual_chord_gene(melanoma, sources.use = NULL, targets.use = NULL, signaling = c("TGFb", "BMP", "GDF", "ACTIVIN"), lab.cex = 1)
+
+```
+
+```{r}
+netVisual_chord_cell(melanoma, sources.use = NULL, targets.use = NULL, signaling = c("TGFb", "BMP", "GDF", "ACTIVIN"))
+
+```
+
+
+
+# Identify signaling groups based on their functional similarity
+
+```{r vnbi}
+melanoma <- computeNetSimilarity(melanoma, type = "functional")
+melanoma <- netEmbedding(melanoma, type = "functional")
+#> Manifold learning of the signaling networks for a single dataset
+melanoma <- netClustering(melanoma, type = "functional") 
+
+#> Classification learning of the signaling networks for a single dataset
+# Visualization in 2D-space
+netVisual_embedding(melanoma, type = "functional", label.size = 3.5)
+
+
+```
+
+
+
+# Saving cellchat object for shiny app
+
+```{r rnugi}
+
+saveRDS(melanoma, "cellchat.rds")
+
+
+```
+

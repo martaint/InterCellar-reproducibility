@@ -1,0 +1,89 @@
+---
+title: "Functional similarity in InterCellar"
+author: "Marta Interlandi"
+date: "10/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup_environment, message=FALSE, warning=FALSE}
+library(ggplot2) 
+library(tidyr)
+library(umap)
+library(dendextend)
+library(ggrepel)
+
+setwd("/marta_home/InterCellar-reproduc/InterCellar-reproducibility/functional_similarity/")
+
+```
+
+
+# Create example of int-pairs by functional terms matrix
+
+
+```{r vnuhi}
+
+func_mat <- data.frame(int_pairs = c(rep("ip1", 4), rep("ip2", 5), rep("ip3", 3), rep("ip4", 4), rep("ip5", 4), rep("ip6",2), rep("ip7",3), rep("ip8",2), rep("ip9", 1), rep("ip10", 2)),
+                       funct = c("f1", "f2", "f3", "f4", "f1", "f2", "f3", "f4", "f5", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f5", "f6", "f8", "f9", "f9", "f10", "f8", "f9", "f10", "f9", "f10", "f9", "f9", "f10"),
+                       val = 1)
+func_mat$int_pairs <- factor(func_mat$int_pairs, levels =paste0("ip", 1:10))
+func_mat$funct <- factor(func_mat$funct, levels =paste0("f", 1:10))
+
+
+
+g <- ggplot(func_mat, aes(x = funct, y = int_pairs, size = val)) +
+  geom_point() +
+  theme_minimal()
+
+ggsave("Dotplot_ipBYfunctions.pdf", plot = g, device = "pdf")
+
+```
+
+# UMAP and dendrogram
+
+
+```{r nvuih}
+mat <- as.matrix(pivot_wider(func_mat, names_from = "funct", values_from = "val", values_fill =  0, values_fn = as.numeric))
+rownames(mat) <- mat[, 1]
+mat <- mat[, -1]
+
+mat <- t(apply(mat, 1, function(x) as.numeric(x)))
+
+intPairs_umap <- umap(mat, 
+                      n_neighbors = ifelse(nrow(mat) > 15,
+                                               15,
+                                               nrow(mat)-1), 
+                      n_components = 2,
+                      metric = "cosine", input= "data", min_dist = 0.001)
+umap.embed <- data.frame(UMAP_1 = intPairs_umap$layout[,1], 
+                         UMAP_2 = intPairs_umap$layout[,2],
+                         int_pair = dimnames(intPairs_umap$layout)[[1]])
+    
+## Hierarchical clust
+d <- dist(umap.embed[, c("UMAP_1", "UMAP_2")], method="euclidean")
+h_clust <- hclust(d, method = "ward.D2")
+
+clust_assign <- dendextend::cutree(h_clust,
+                         k = 3,
+                         order_clusters_as_data = FALSE)
+
+d <- as.dendrogram(h_clust)
+dendro <- dendextend::color_branches(d,k = 3,groupLabels = TRUE) 
+
+pdf("Dendro.pdf")
+plot(dendro)
+dev.off()
+
+umap.embed$modules <- as.factor(clust_assign)
+
+
+g <- ggplot(umap.embed, aes(x = UMAP_1, y = UMAP_2)) +
+  geom_point(size = 5) +
+  geom_label_repel(aes(label = int_pair, fill = modules), color = "white", size = 8, segment.colour="black") +
+  theme_minimal()
+
+ggsave("UMAP.pdf", plot = g, device = "pdf")
+```

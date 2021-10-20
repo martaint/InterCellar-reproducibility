@@ -1,5 +1,6 @@
 #' Manually change the annotation of L-L and R-R pairs
 #'
+#' @description this function re-annotates manually selected genes that are incorrectly annotated by CellPhoneDB v2
 #' @param input.data preprocessed table
 #'
 #' @return input.data
