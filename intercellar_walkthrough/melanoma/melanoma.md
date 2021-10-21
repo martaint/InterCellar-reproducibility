@@ -1,7 +1,10 @@
-<img src="./logo_lowres.png" width="50%" style="display: block; margin: auto;" />
+Walkthrough of melanoma analysis with InterCellar
+================
+Marta Interlandi (<marta.interlandi@uni-muenster.de>)
 
-Introduction
-============
+<img src="screenshots/logo_lowres.png" width="20%" style="display: block; margin: auto;" />
+
+# Introduction
 
 `InterCellar` is a [Bioconductor](http://bioconductor.org) package that
 provides an interactive Shiny application to enable the analysis of
@@ -10,8 +13,7 @@ data. Every step of the analysis can be performed interactively, thus
 not requiring any programming skills. Moreover, `InterCellar` runs on
 your local machine, avoiding issues related to data privacy.
 
-Installation
-------------
+## Installation
 
 `InterCellar` is distributed as a
 [Bioconductor](https://www.bioconductor.org/) package and requires R
@@ -26,8 +28,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("InterCellar")
 ```
 
-Launching the app
------------------
+## Launching the app
 
 Once InterCellar is successfully installed, it can be loaded as follow:
 
@@ -43,13 +44,10 @@ automatically, please open a browser and navigate to the address shown
 `reproducible = TRUE` ensures that your results will be reproducible
 across R sessions.
 
-Data upload
-===========
+# Data upload
 
 <img src="screenshots/upload_mela.png" width="120%" style="display: block; margin: auto;" />
 
-Data exploration: Universes
-===========================
+# Data exploration: Universes
 
-References
-==========
+# References

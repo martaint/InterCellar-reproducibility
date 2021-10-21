@@ -1,0 +1,63 @@
+---
+title: "Walkthrough of melanoma analysis with InterCellar"
+author: Marta Interlandi (marta.interlandi@uni-muenster.de)
+output: github_document
+---
+
+
+```{r, echo=FALSE, out.width='20%', fig.align='center'}
+knitr::include_graphics(path = "screenshots/logo_lowres.png")
+```
+
+# Introduction
+
+`InterCellar` is a [Bioconductor](http://bioconductor.org) package that provides
+an interactive Shiny application to enable the analysis of cell-cell communication from
+single-cell RNA sequencing (scRNA-seq) data. Every step of the analysis can be
+performed interactively, thus not requiring any programming skills. Moreover,
+`InterCellar` runs on your local machine, avoiding issues related to data privacy.
+
+## Installation
+
+`InterCellar` is distributed as a [Bioconductor](https://www.bioconductor.org/) package and requires R (version 4.1) and Bioconductor (version 3.14).
+
+To install `InterCellar` package enter:
+
+```{r eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("InterCellar")
+```
+
+## Launching the app
+
+Once InterCellar is successfully installed, it can be loaded as follow:
+
+
+In order to start the app, please run the following command:
+
+```{r demostart, eval=FALSE}
+InterCellar::run_app( reproducible = TRUE )
+```
+
+`InterCellar` should be opening in a browser. If this does not happen automatically,
+please open a browser and navigate to the address shown (for example, `Listening on http://127.0.0.1:6134`). The flag `reproducible = TRUE` ensures that your results will
+be reproducible across R sessions.
+
+
+# Data upload
+
+
+
+```{r, echo=FALSE, out.width='120%',fig.align='center'}
+knitr::include_graphics(path = "screenshots/upload_mela.png")
+```
+
+
+# Data exploration: Universes
+
+
+
+
+# References
