@@ -1,4 +1,5 @@
-Walkthrough of melanoma analysis with InterCellar
+Walkthrough of melanoma cell-cell communication analysis with
+InterCellar
 ================
 Marta Interlandi (<marta.interlandi@uni-muenster.de>)
 
@@ -56,20 +57,20 @@ of the annotation are then shown in **Table**:
 
 <img src="screenshots/fv_tab_mela.png" width="100%" style="display: block; margin: auto;" />
 
-A second table is provided in **Ranking**, were annotated functional
+A second table is provided in **Ranking**, where annotated functional
 terms are ranked by the number of enriched int-pairs:
 
 <img src="screenshots/fv_rank_mela.png" width="100%" style="display: block; margin: auto;" />
 
 By clicking on a functional term of interest in this **Ranking**, the
-corresponding **Sunburst plot** will be generated:
+corresponding **Sunburst plot** is generated:
 
 <img src="screenshots/fv_sun_mela.png" width="100%" style="display: block; margin: auto;" />
 
 ## Int-pair modules analysis
 
-We continued our analysis with the **Int-pair Modules** panel, which can
-be found under **3. Data-driven analysis**. As first step, we chose
+We continue our analysis with the **Int-pair Modules** panel, which can
+be found under **3. Data-driven analysis**. As first step, we choose
 *Viewpoint cluster* and *Flow* as malignant cells and directed-outgoing:
 
 <img src="screenshots/ip_choice_mela.png" width="100%" style="display: block; margin: auto;" />
@@ -77,13 +78,13 @@ be found under **3. Data-driven analysis**. As first step, we chose
 `InterCellar` computes int-pair modules and displays them in a
 **dendrogram** and a **UMAP**. The number of modules is automatically
 chosen by `InterCellar` from the *Elbow Plot*, but can be redefined by
-the user: here we increased the number from 7 to 9, to gain more
+the user: here we increase the number from 7 to 9, to gain more
 specificity on modules composed of many int-pairs.
 
 <img src="screenshots/ip_def_mela.png" width="100%" style="display: block; margin: auto;" />
 
-Each int-pair module can be visualized in a **Circle Plot**. We chose
-module \#8 and colored links by scaled interaction score:
+Each int-pair module can be visualized in a **Circle Plot**. We choose
+module \#8 and color links by scaled interaction score:
 
 <img src="screenshots/ip_circle8_mela.png" width="100%" style="display: block; margin: auto;" />
 
