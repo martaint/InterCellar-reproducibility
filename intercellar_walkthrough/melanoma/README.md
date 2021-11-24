@@ -30,40 +30,47 @@ under **1.Data** to upload our input data and start the analysis. We use
 panel *From supported tools*, where we can select `CellChat` as input
 method and, after filling out metadata which will be then used by
 `InterCellar` (output folder, CCI data ID and output folder tag), we
-upload the .csv file by clicking on `GO!`.
+upload the .csv file by clicking on
+`GO!`.
 
 <img src="screenshots/upload_mela.png" width="100%" style="display: block; margin: auto;" />
 
 ## Data exploration: Universes
 
 As first step in our analysis we perform data exploration by navigating
-to the three **Universes**, starting with the **cluster-verse**.
+to the three **Universes**, starting with the
+**cluster-verse**.
 
 <img src="screenshots/cv_net_mela.png" width="100%" style="display: block; margin: auto;" />
 
 Next, we explore the **gene-verse**: clicking on `Filter!` will compute
-the **Table** shown below:
+the **Table** shown
+below:
 
 <img src="screenshots/gv_tab_mela.png" width="100%" style="display: block; margin: auto;" />
 
 We can click on int-pairs of interest, shown in this **Table**, to
-trigger the creation of a **Dot plot**:
+trigger the creation of a **Dot
+plot**:
 
 <img src="screenshots/gv_dot_mela.png" width="100%" style="display: block; margin: auto;" />
 
 Lastly, we continue with the **function-verse**, where we perform the
 functional annotation selecting all data source available. The results
-of the annotation are then shown in **Table**:
+of the annotation are then shown in
+**Table**:
 
 <img src="screenshots/fv_tab_mela.png" width="100%" style="display: block; margin: auto;" />
 
 A second table is provided in **Ranking**, where annotated functional
-terms are ranked by the number of enriched int-pairs:
+terms are ranked by the number of enriched
+int-pairs:
 
 <img src="screenshots/fv_rank_mela.png" width="100%" style="display: block; margin: auto;" />
 
 By clicking on a functional term of interest in this **Ranking**, the
-corresponding **Sunburst plot** is generated:
+corresponding **Sunburst plot** is
+generated:
 
 <img src="screenshots/fv_sun_mela.png" width="100%" style="display: block; margin: auto;" />
 
@@ -71,7 +78,8 @@ corresponding **Sunburst plot** is generated:
 
 We continue our analysis with the **Int-pair Modules** panel, which can
 be found under **3. Data-driven analysis**. As first step, we choose
-*Viewpoint cluster* and *Flow* as malignant cells and directed-outgoing:
+*Viewpoint cluster* and *Flow* as malignant cells and
+directed-outgoing:
 
 <img src="screenshots/ip_choice_mela.png" width="100%" style="display: block; margin: auto;" />
 
@@ -79,18 +87,21 @@ be found under **3. Data-driven analysis**. As first step, we choose
 **dendrogram** and a **UMAP**. The number of modules is automatically
 chosen by `InterCellar` from the *Elbow Plot*, but can be redefined by
 the user: here we increase the number from 7 to 9, to gain more
-specificity on modules composed of many int-pairs.
+specificity on modules composed of many
+int-pairs.
 
 <img src="screenshots/ip_def_mela.png" width="100%" style="display: block; margin: auto;" />
 
 Each int-pair module can be visualized in a **Circle Plot**. We choose
-module \#8 and color links by scaled interaction score:
+module \#8 and color links by scaled interaction
+score:
 
 <img src="screenshots/ip_circle8_mela.png" width="100%" style="display: block; margin: auto;" />
 
 Finally, we can investigate significant functional terms associated to
 each module in the following **Table**. In particular, we manually
 selected relevant terms from these tables and annotated the UMAP
-presented in Fig. 3a of our manuscript.
+presented in Fig. 3a of our
+manuscript.
 
 <img src="screenshots/ip_func_tab_1_mela.png" width="100%" style="display: block; margin: auto;" />
