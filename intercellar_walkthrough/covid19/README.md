@@ -34,7 +34,8 @@ input method and, after filling out metadata which will be then used by
 select the respective folders for COVID-19 critical and moderate
 conditions and upload the data by clicking on `GO!`. As we start by
 investigating these two conditions, we can upload both and analyze them
-in parallel before actually comparing them.
+in parallel before actually comparing
+them.
 
 <img src="screenshots/upload_covid_1.png" width="100%" style="display: block; margin: auto;" />
 
@@ -47,7 +48,8 @@ available in the **function-verse**. We can then perform the annotation
 of each condition by switching the *Active CCI data* on the left menu.
 The functional annotation is a required step before proceeding with the
 **Data-driven analysis**. The annotation result for the critical cases
-is shown in the **Table** below:
+is shown in the **Table**
+below:
 
 <img src="screenshots/fv_tab_covid.png" width="100%" style="display: block; margin: auto;" />
 
@@ -72,7 +74,8 @@ Next, we are interested in analyzing which int-pairs are
 condition-specific and which annotated functional terms are significant
 in this comparison. Scrolling down to the *Function-based* section, we
 can investigate condition-specific int-pairs and their significant
-functions, shown in the following **Table**:
+functions, shown in the following
+**Table**:
 
 <img src="screenshots/mc_func_covid.png" width="100%" style="display: block; margin: auto;" />
 
@@ -84,7 +87,8 @@ generated:
 ## Adding healthy controls as third condition
 
 Lastly, we add the control data to investigate int-pair/cluster-pair
-couplets. Going back to the **Upload** module:
+couplets. Going back to the **Upload**
+module:
 
 <img src="screenshots/upload_covid_2.png" width="100%" style="display: block; margin: auto;" />
 
@@ -92,22 +96,26 @@ Once again, we can perform a parallel analysis of the 3 conditions, by
 switching the *Active CCI Data*. Here, we use the functionalities
 implemented in the **gene-verse** to investigate int-pairs of the
 *CXC*-family. For example, we select the int-pairs of interest in the
-**Table** below, for moderate cases:
+**Table** below, for moderate
+cases:
 
 <img src="screenshots/gv_cxcl_tab_covid.png" width="100%" style="display: block; margin: auto;" />
 
-and we refine the cluster selection in the **Dot Plot**:
+and we refine the cluster selection in the **Dot
+Plot**:
 
 <img src="screenshots/gv_dot_cxcl_covid.png" width="100%" style="display: block; margin: auto;" />
 
 Finally, we perform the functional annotation for the newly-added
 control data and move to the **Multiple Conditions** comparison to
 analyze condition-specific int-pair/clust-pair couplets. Thus, we add
-controls as third condition in the comparison:
+controls as third condition in the
+comparison:
 
 <img src="screenshots/mc_choose3.png" width="100%" style="display: block; margin: auto;" />
 
 And select condition-specific int-pairs from the *Gene-based* comparison
-**Table**, to see them in a **Dot Plot**:
+**Table**, to see them in a **Dot
+Plot**:
 
 <img src="screenshots/mc_dot_3cond.png" width="100%" style="display: block; margin: auto;" />
